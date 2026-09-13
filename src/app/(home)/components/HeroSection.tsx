@@ -28,7 +28,7 @@ export default function HeroSection() {
             <span className="h-2 w-2 rounded-full bg-red-400 shadow-[0_0_12px_rgba(248,113,113,0.9)]" />
             Trusted Auto Care in Franklin Square
           </p>
-          <h1 className="max-w-3xl text-5xl font-black leading-[0.98] tracking-tight text-white sm:text-6xl lg:text-8xl">
+          <h1 className="max-w-3xl text-4xl font-black leading-[0.98] tracking-tight text-white sm:text-6xl lg:text-7xl">
             Honest, Quality Auto Repair
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-7 text-slate-200 sm:text-lg sm:leading-8">
