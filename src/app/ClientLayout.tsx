@@ -58,7 +58,7 @@ const navigationItems = [
     },
     { name: "Car Care Plans", path: "car-care-plans" },
     { name: "Reviews", path: "reviews" },
-     { name: "Faqs", path: "faq" },
+     { name: "Faqs", path: "faqs" },
     { name: "Videos", path: "videos" },
     // { name: "Blog", path: "blog" },
     { name: "Contact", path: "contact" }
