@@ -15,10 +15,12 @@ type Review = {
     relative_time_description: string;
 };
 const LiveGoogleReviews = () => {
+    
     const [reviews, setReviews] = useState<Review[]>([]);
 
     const [isLoading, setIsLoading] = useState(true);
-
+// Track ki konsa review expanded hai (index handle karega)
+    const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
     useEffect(() => {
         const fetchReviews = async () => {
             setIsLoading(true);
@@ -36,87 +38,102 @@ const LiveGoogleReviews = () => {
         };
         fetchReviews();
     }, []);
-
+const toggleReadMore = (index: number) => {
+        setExpandedIndex(expandedIndex === index ? null : index);
+    };
     if (isLoading) {
         return <div className="text-center p-8 text-gray-800">Loading latest 5-star reviews...</div>;
     }
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {reviews.map((review, index) => (
-                <motion.div
-                    key={index}
-                    variants={fadeIn("up", "spring", index * 0.4, 0.75)}
-                >
-                    <div className="flex justify-center p-0 font-sans">
-                        <div className="flex w-full max-w-sm flex-col md:max-w-md">
+{reviews.map((review, index) => {
+                const isExpanded = expandedIndex === index;
 
-                            {/* Review Bubble Card (animated, center aligned) */}
-                            <motion.div
-                                whileHover={{ scale: 1.05 }}
-                                transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                                className="relative mb-5 flex min-h-[285px] w-full flex-col justify-between rounded-2xl border border-slate-200 bg-white p-7 shadow-[0_10px_25px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_18px_35px_rgba(30,64,175,0.14)]"
-                            >
-                                {/* Star Rating */}
-                                <div className="flex justify-center space-x-1 mb-3">
-                                    {[...Array(5)].map((_, i) => (
-                                        <Star
-                                            key={i}
-                                            className={`w-5 h-5 ${i < review.rating
-                                                    ? "text-yellow-400 fill-current"
-                                                    : "text-gray-300"
-                                                }`}
-                                        />
-                                    ))}
-                                </div>
+                return (
+                    <motion.div
+                        key={index}
+                        variants={fadeIn("up", "spring", index * 0.4, 0.75)}
+                    >
+                        <div className="flex justify-center p-0 font-sans">
+                            <div className="flex w-full max-w-sm flex-col md:max-w-md">
 
-                                {/* Review Text */}
-                                <Quote className="absolute right-6 top-5 h-8 w-8 text-blue-100" />
-                                <p className="text-center text-lg leading-relaxed text-slate-700 italic">
-                                    &quot;{review.text}&quot;
-                                </p>
+                                {/* Review Bubble Card */}
+                                <motion.div
+                                    whileHover={{ scale: 1.02 }}
+                                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                                    className="relative mb-5 flex min-h-[285px] w-full flex-col justify-between rounded-2xl border border-slate-200 bg-white p-7 shadow-[0_10px_25px_rgba(15,23,42,0.08)] transition-all duration-300 hover:border-blue-200 hover:shadow-[0_18px_35px_rgba(30,64,175,0.14)]"
+                                >
+                                    <div>
+                                        {/* Star Rating */}
+                                        <div className="flex justify-center space-x-1 mb-3">
+                                            {[...Array(5)].map((_, i) => (
+                                                <Star
+                                                    key={i}
+                                                    className={`w-5 h-5 ${i < review.rating
+                                                            ? "text-yellow-400 fill-current"
+                                                            : "text-gray-300"
+                                                        }`}
+                                                />
+                                            ))}
+                                        </div>
 
-                                {/* Bubble Tail */}
-                                <div className="absolute left-8 -bottom-2 
-                        w-4 h-4 bg-white rotate-45 border-r border-b border-gray-200">
-                                </div>
-                            </motion.div>
+                                        {/* Review Text with 4-line Clamp & Read More */}
+                                        <Quote className="absolute right-6 top-5 h-8 w-8 text-blue-100 pointer-events-none" />
+                                        
+                                        <p className={`text-center text-lg leading-relaxed text-slate-700 italic ${
+                                            !isExpanded ? 'line-clamp-3' : ''
+                                        }`}>
+                                            &quot;{review.text}&quot;
+                                        </p>
 
-                            {/* User Info Section (LEFT aligned, connected look) */}
-                            <div className="flex items-center space-x-3 ml-2 px-1">
-                                <Image
-                                    src={review?.profile_photo_url || "/mypic.png"}
-                                    alt={review.author_name}
-                                    width={48} // w-12 = 48px
-                                    height={48} // h-12 = 48px
-                                    className="rounded-full border border-blue-200 object-cover shadow-sm ring-2 ring-white"
-                                />
-                                <div className="flex flex-col text-left">
-                                    <span className="text-lg font-bold text-slate-900">
-                                        {review.author_name}
-                                    </span>
-                                    <span className="text-sm text-gray-500">
-                                        {review.time
-                                            ? new Date(review.time * 1000).toLocaleDateString('en-US', {
-                                                year: 'numeric',
-                                                month: 'long',
-                                                day: 'numeric',
-                                            })
-                                            : review.relative_time_description || 'Recently'}
+                                        {/* Read More / Show Less Button */}
+                                        {review.text.length > 120 && (
+                                            <div className="text-center mt-2">
+                                                <button
+                                                    onClick={() => toggleReadMore(index)}
+                                                    className="text-sm font-semibold text-blue-600 hover:text-blue-800 focus:outline-none underline"
+                                                >
+                                                    {isExpanded ? "Show Less" : "Read More"}
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
 
+                                    {/* Bubble Tail */}
+                                    <div className="absolute left-8 -bottom-2 w-4 h-4 bg-white rotate-45 border-r border-b border-gray-200">
+                                    </div>
+                                </motion.div>
 
-                                    </span>
+                                {/* User Info Section */}
+                                <div className="flex items-center space-x-3 ml-2 px-1">
+                                    <Image
+                                        src={review?.profile_photo_url || "/mypic.png"}
+                                        alt={review.author_name}
+                                        width={48}
+                                        height={48}
+                                        className="rounded-full border border-blue-200 object-cover shadow-sm ring-2 ring-white"
+                                    />
+                                    <div className="flex flex-col text-left">
+                                        <span className="text-lg font-bold text-slate-900">
+                                            {review.author_name}
+                                        </span>
+                                        <span className="text-sm text-gray-500">
+                                            {review.time
+                                                ? new Date(review.time * 1000).toLocaleDateString('en-US', {
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric',
+                                                })
+                                                : review.relative_time_description || 'Recently'}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </motion.div>
-
-
-
-
-            ))}
-
+                    </motion.div>
+                );
+            })}
         </div>
 
     );

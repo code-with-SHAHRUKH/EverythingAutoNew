@@ -58,6 +58,7 @@ const navigationItems = [
     },
     { name: "Car Care Plans", path: "car-care-plans" },
     { name: "Reviews", path: "reviews" },
+     { name: "Faqs", path: "faq" },
     { name: "Videos", path: "videos" },
     // { name: "Blog", path: "blog" },
     { name: "Contact", path: "contact" }
@@ -98,7 +99,7 @@ export default function Layout({
 }>) {
     const location = usePathname();
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
-  const [footerServicesOpen, setFooterServicesOpen] = React.useState(false);
+  const [footerServicesOpen, setFooterServicesOpen] = React.useState(true);
 
     const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
     const { playAudio, pauseAudio, isPlaying } = useAudioStore();
@@ -429,12 +430,12 @@ export default function Layout({
             <div>
               <button
                 type="button"
-                onClick={() => setFooterServicesOpen((open) => !open)}
+                // onClick={() => setFooterServicesOpen((open) => !open)}
                 aria-expanded={footerServicesOpen}
                 className="app-focus-ring mb-5 flex w-full items-center justify-between gap-3 text-left text-sm font-extrabold uppercase tracking-[0.18em] text-white"
               >
                 <span className="flex items-center gap-3"><span className="h-5 w-1 rounded-full bg-red-500" />Our Services</span>
-                <ChevronDown className={`h-5 w-5 text-blue-300 transition-transform duration-300 ${footerServicesOpen ? "rotate-180" : ""}`} />
+                {/* <ChevronDown className={`h-5 w-5 text-blue-300 transition-transform duration-300 ${footerServicesOpen ? "rotate-180" : ""}`} /> */}
               </button>
               <div className={`grid transition-all duration-300 ${footerServicesOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-70"}`}>
                 <ul className="grid min-h-0 grid-cols-1 gap-x-5 gap-y-3 overflow-hidden text-sm sm:grid-cols-2 lg:grid-cols-1">

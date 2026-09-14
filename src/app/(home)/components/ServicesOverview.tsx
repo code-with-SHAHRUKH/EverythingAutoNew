@@ -95,7 +95,7 @@ useEffect(() => {
     const images = imagesRef.current;
     if (!images) return;
 
-    progress.current.value -= 0.0008;
+    // progress.current.value -= 0.0008;
 
     images.forEach((image, index) => {
       const theta = index / images.length - progress.current.value;
