@@ -324,66 +324,76 @@ export default function Layout({
                                 </div>
 
                                 {/* Mobile Menu */}
-                                <div className="lg:hidden">
-                                    <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-                                        <SheetTrigger asChild>
-                                            <Button className="flex items-center w-12 h-12 border-black justify-center" variant="outline" size="icon">
-                                                <Menu className=" !w-10 !h-10" />
-                                            </Button>
-                                        </SheetTrigger>
-                                        <SheetContent className="w-80">
-                                            <nav className="flex flex-col space-y-2 mt-8">
-                                                <Accordion type="single" collapsible className="w-full">
-                                                    {navigationItems.map((item) => item.submenu ? (
-                                                        <AccordionItem value={item.name} key={item.name}>
-                                                            <AccordionTrigger className="font-bold text-lg hover:no-underline text-gray-900">{item.name}</AccordionTrigger>
-                                                            <AccordionContent>
-                                                                <div className="flex flex-col space-y-1 pl-4">
-                                                                    {item.submenu.map(subItem => (
-                                                                        <Link
-                                                                            key={subItem.name}
-                                                                            href={createPageUrl(subItem.path)}
-                                                                            className="block py-2 text-gray-600 hover:text-[var(--color-primary)]"
-                                                                            onClick={() => setMobileMenuOpen(false)}
-                                                                        >
-                                                                            {subItem.name}
-                                                                        </Link>
-                                                                    ))}
-                                                                </div>
-                                                            </AccordionContent>
-                                                        </AccordionItem>
-                                                    ) : (
-                                                        <Link
-                                                            key={item.name}
-                                                            href={createPageUrl(item.path)}
-                                                            className={`block py-3 font-bold text-lg border-b ${location === `/${item.path.toLowerCase()}` || (item.path === "/" && location === "/")
-                                                                ? "text-[var(--color-primary)]"
-                                                                : "text-gray-800 hover:text-[var(--color-primary)]"
-                                                                }`}
-                                                            onClick={() => setMobileMenuOpen(false)}
-                                                        >
-                                                            {item.name}
-                                                        </Link>
-                                                    ))}
-                                                </Accordion>
-                                            </nav>
-                                            <div className="mt-8 space-y-3">
-                                                <a href="tel:516-775-9724" className="w-full block">
-                                                    <Button className="action-button action-button-call w-full px-4 py-2 text-lg flex items-center justify-center space-x-1 xl:px-6 xl:py-3">
-                                                        <Phone className="w-4 h-4" />
-                                                        <span>(516) 775-9724</span>
-                                                    </Button>
-                                                </a>
-                                                <a href="https://myalp.io/nqc45n" target="_blank" rel="noopener noreferrer" className="w-full block">
+                             <div className="lg:hidden">
+    <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+        <SheetTrigger asChild>
+            <Button className="flex items-center w-12 h-12 border-black justify-center" variant="outline" size="icon">
+                <Menu className="!w-10 !h-10" />
+            </Button>
+        </SheetTrigger>
+        
+        {/* max-h-screen aur overflow-y-auto add kiya gaya hai */}
+        <SheetContent className="w-80 max-h-screen overflow-y-auto flex flex-col justify-between">
+            <div className="flex-1 overflow-y-auto pr-1">
+                <nav className="flex flex-col space-y-2 mt-8">
+                    <Accordion type="single" collapsible className="w-full">
+                        {navigationItems.map((item) => item.submenu ? (
+                            <AccordionItem value={item.name} key={item.name}>
+                                <AccordionTrigger className="font-bold text-lg hover:no-underline text-gray-900">
+                                    {item.name}
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                    {/* Services list ke liye max-height aur scrollbar */}
+                                    <div className="flex flex-col space-y-1 pl-4 max-h-60 overflow-y-auto pr-2">
+                                        {item.submenu.map(subItem => (
+                                            <Link
+                                                key={subItem.name}
+                                                href={createPageUrl(subItem.path)}
+                                                className="block py-2 text-gray-600 hover:text-[var(--color-primary)]"
+                                                onClick={() => setMobileMenuOpen(false)}
+                                            >
+                                                {subItem.name}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </AccordionContent>
+                            </AccordionItem>
+                        ) : (
+                            <Link
+                                key={item.name}
+                                href={createPageUrl(item.path)}
+                                className={`block py-3 font-bold text-lg border-b ${
+                                    location === `/${item.path.toLowerCase()}` || (item.path === "/" && location === "/")
+                                        ? "text-[var(--color-primary)]"
+                                        : "text-gray-800 hover:text-[var(--color-primary)]"
+                                }`}
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
+                    </Accordion>
+                </nav>
+            </div>
 
-                                                    <Button className="action-button action-button-book w-full px-4 text-lg flex items-center justify-center xl:px-6 xl:py-3">
-                                                        <Calendar className="w-4 h-4" />
-                                                        Book Appointment</Button>
-                                                </a>
-                                            </div>
-                                        </SheetContent>
-                                    </Sheet>
-                                </div>
+            {/* Bottom Buttons - Fixed at Bottom */}
+            <div className="mt-6 pt-4 border-t space-y-3 pb-6">
+                <a href="tel:516-775-9724" className="w-full block">
+                    <Button className="action-button action-button-call w-full px-4 py-2 text-lg flex items-center justify-center space-x-1 xl:px-6 xl:py-3">
+                        <Phone className="w-4 h-4" />
+                        <span>(516) 775-9724</span>
+                    </Button>
+                </a>
+                <a href="https://myalp.io/nqc45n" target="_blank" rel="noopener noreferrer" className="w-full block">
+                    <Button className="action-button action-button-book w-full px-4 text-lg flex items-center justify-center xl:px-6 xl:py-3">
+                        <Calendar className="w-4 h-4" />
+                        Book Appointment
+                    </Button>
+                </a>
+            </div>
+        </SheetContent>
+    </Sheet>
+</div>
                             </div>
                         </div>
                     </header>
