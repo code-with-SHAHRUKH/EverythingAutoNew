@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import HeroSection from "./components/HeroSection";
 import ServicesOverview from "./components/ServicesOverview";
+import  Video from "./components/video";
 import GoogleReviews from "./components/GoogleReviews";
 import { Button } from "@/components/ui/button";
 import { Calendar, Phone } from "lucide-react";
-
+import FAQSection from "./components/faqs";
 export const metadata: Metadata = {
   title: "Everything Auto | Reliable Auto Repair in Franklin Square, NY",
   description:
@@ -141,6 +142,8 @@ export default async function Home() {
         <ServicesOverview />
       </div>
       <GoogleReviews />
+      <Video/>
+      <FAQSection/>
       <section className="bg-gradient-to-b from-blue-900 to-gray-900 px-4 py-20 text-white sm:px-8 lg:py-24">
         <div className="relative mx-auto max-w-4xl text-center">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-300/30 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-blue-100 shadow-inner">
